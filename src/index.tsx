@@ -1,32 +1,29 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'whatwg-fetch';
 
-import createHistory from 'history/createBrowserHistory';
+import { ConnectedRouter, connectRouter, routerMiddleware } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter, routerMiddleware, routerReducer } from 'react-router-redux';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
 import { Routes } from './routes';
 
-const history = createHistory();
-const initialState = {};
+const history = createBrowserHistory();
+const rootReducer = combineReducers<{}>({});
 
 const store = createStore(
-  combineReducers({
-    // ...reducers
-    router: routerReducer
-  }),
-  initialState,
-  applyMiddleware(thunk, routerMiddleware(history))
+  connectRouter(history)(rootReducer),
+  {},
+  compose(applyMiddleware(routerMiddleware(history), thunk))
 );
 
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <Routes/>
+      <Routes />
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')

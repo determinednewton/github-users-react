@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { SFC } from 'react';
 import Loadable from 'react-loadable';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-
-// import './App.css';
-// import logo from './logo.svg';
+import { Route, RouteComponentProps, Switch } from 'react-router';
 
 const NoMatch: SFC<RouteComponentProps<{}, {}>> = ({ location }) => (
   <div>
