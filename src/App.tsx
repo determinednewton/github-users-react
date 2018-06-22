@@ -1,25 +1,39 @@
 import * as React from 'react';
-import { BrowserRouter as Router, match as Match, Route, Switch } from 'react-router-dom';
+import { SFC } from 'react';
+import { BrowserRouter as Router, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 // import './App.css';
 // import logo from './logo.svg';
 
-const Users = () => <h1>Users</h1>;
-const User = ({ match }: { match: Match<{userId:string}> }) => (
-  <>
-    <h1>User</h1>
-    <div>
-      <h3>Id: {match.params.userId}</h3>
-    </div>
-  </>
+import Loadable from 'react-loadable';
+
+const NoMatch: SFC<RouteComponentProps<{}, {}>> = ({ location }) => (
+  <div>
+    <h3>
+      No match for <code>{location.pathname}</code>
+    </h3>
+  </div>
 );
 
 const App = () => (
   <Router>
     <Switch>
-      {/* TODO lazy load */}
-      <Route exact path="/" component={Users} />
-      <Route path="/user/:userId(\d+)" component={User} />
+      <Route
+        exact
+        path="/"
+        component={Loadable({
+          loader: () => import('./user-list/UserList'),
+          loading: () => <div>loading User List</div>
+        })}
+      />
+      <Route
+        path="/user/:userId(\d+)"
+        component={Loadable({
+          loader: () => import('./user-details/UserDetails'),
+          loading: () => <div>loading User Details</div>
+        })}
+      />
+      <Route component={NoMatch} />
     </Switch>
   </Router>
 );
