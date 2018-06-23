@@ -3,6 +3,8 @@ import { SFC } from 'react';
 import Loadable from 'react-loadable';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
+import { Loader } from './components/loader';
+
 const NoMatch: SFC<RouteComponentProps<{}, {}>> = ({ location }) => (
   <div>
     <h3>
@@ -17,15 +19,15 @@ export const Routes = () => (
       exact
       path="/"
       component={Loadable({
-        loader: () => import('./user-list/UserList'),
-        loading: () => <div>loading User List</div>
+        loader: () => import('./components/UserList'),
+        loading: Loader
       })}
     />
     <Route
-      path="/user/:userId(\d+)"
+      path="/user/:login"
       component={Loadable({
-        loader: () => import('./user-details/UserDetails'),
-        loading: () => <div>loading User Details</div>
+        loader: () => import('./components/User'),
+        loading: Loader
       })}
     />
     <Route component={NoMatch} />
