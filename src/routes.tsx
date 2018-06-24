@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { SFC } from 'react';
 import Loadable from 'react-loadable';
-import { Route, RouteComponentProps, Switch } from 'react-router';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
-import { Loader } from './components/loader';
+import { Loader } from './components/Loader';
 
 const NoMatch: SFC<RouteComponentProps<{}, {}>> = ({ location }) => (
   <div>

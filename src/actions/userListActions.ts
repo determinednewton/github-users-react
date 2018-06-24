@@ -9,7 +9,7 @@ export const GET_USER_LIST_SUCCESS = 'getUserListSuccess';
 export const GET_USER_LIST_FAILURE = 'getUserListFailure';
 
 export type GetUserListRequestAction = Action<typeof GET_USER_LIST_REQUEST> & { since?: number };
-export type GetUserListSuccessAction = Action<typeof GET_USER_LIST_SUCCESS> & { users: GithubUser[] };
+export type GetUserListSuccessAction = Action<typeof GET_USER_LIST_SUCCESS> & { userList: GithubUser[] };
 export type GetUserListFailureAction = Action<typeof GET_USER_LIST_FAILURE>;
 
 export const getUserListRequest = (since?: number): GetUserListRequestAction => ({
@@ -17,9 +17,9 @@ export const getUserListRequest = (since?: number): GetUserListRequestAction => 
   since
 });
 
-export const getUserListSuccess = (users: GithubUser[]): GetUserListSuccessAction => ({
+export const getUserListSuccess = (userList: GithubUser[]): GetUserListSuccessAction => ({
   type: GET_USER_LIST_SUCCESS,
-  users
+  userList
 });
 
 export const getUserListFailure = (): GetUserListFailureAction => ({
@@ -29,5 +29,12 @@ export const getUserListFailure = (): GetUserListFailureAction => ({
 export const getUserList = (since?: number) => (dispatch: ThunkDispatch<State, any, any>) => {
   dispatch(getUserListRequest(since));
 
-  fetchUserList(since).then(users => dispatch(getUserListSuccess(users)), () => dispatch(getUserListFailure()));
+  fetchUserList(since).then(userList => dispatch(getUserListSuccess(userList)), () => dispatch(getUserListFailure()));
+};
+
+export const getNextUserList = () => (dispatch: ThunkDispatch<State, any, any>, getState: () => State) => {
+  const userList = getState().userListState.userList!;
+  const { id: since } = userList[userList.length - 1];
+
+  dispatch(getUserList(since));
 };

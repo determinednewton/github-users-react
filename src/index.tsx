@@ -1,24 +1,19 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import 'whatwg-fetch';
 
-import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
 
 import { Routes } from './routes';
 import { configureStore } from './store';
 
-const history = createBrowserHistory();
-
-const store = configureStore(history);
-
 ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
+  <Provider store={configureStore()}>
+    <Router history={createBrowserHistory()}>
       <Routes />
-    </ConnectedRouter>
+    </Router>
   </Provider>,
   document.getElementById('root')
 );

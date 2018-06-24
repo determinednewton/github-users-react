@@ -1,38 +1,87 @@
 import * as React from 'react';
-import { SFC } from 'react';
+import { PureComponent } from 'react';
+import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 import { ThunkDispatch } from 'redux-thunk';
 
-import { getUserList } from '../actions/userListActions';
-import { GithubUser } from '../api/github/api';
-import { State } from '../store';
-
-interface UserListStateProps {
-  users?: GithubUser[];
-  isFetching?: boolean;
-}
+import { getNextUserList, getUserList } from '../actions/userListActions';
+import { State, UserListState } from '../store';
+import { Loader } from './Loader';
 
 interface UserListDispatchProps {
-  onGetUserList: (since?: number) => void;
+  onReloadUserList: () => void;
+  onLoadUserList: () => void;
 }
 
-const mapStateToProps = (state: State): UserListStateProps => {
+const mapStateToProps = (state: State): UserListState => {
   return {
-    users: state.userListState.userList,
-    isFetching: state.userListState.isFetching
+    userList: state.userListState.userList,
+    isFetching: state.userListState.isFetching,
+    canFetchMore: state.userListState.canFetchMore
   };
 };
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<State, any, any>): UserListDispatchProps => {
   return {
-    onGetUserList(since?: number) {
-      dispatch(getUserList(since));
+    onReloadUserList() {
+      dispatch(getUserList());
+    },
+    onLoadUserList() {
+      dispatch(getNextUserList());
     }
   };
 };
 
-const UserList: SFC<RouteComponentProps<{ userId: string }, {}>> = () => <ul>User List</ul>;
+type UserListProps = UserListState & UserListDispatchProps;
+
+export class UserList extends PureComponent<UserListProps, {}> {
+  public componentDidMount(): void {
+    if (!this.props.userList) {
+      this.handleReloadUsers();
+    }
+  }
+
+  public componentWillUnmount(): void {
+    // this.props.onLeavePlansContext();
+  }
+
+  public render(): JSX.Element {
+    const { userList, isFetching, canFetchMore } = this.props;
+
+    return (
+      <div className="text-center">
+        <h1>User List</h1>
+
+        {userList && (
+          <>
+            <Button bsStyle="primary" className="m-2" bsSize="large" onClick={this.handleReloadUsers}>Reload Users</Button>
+            {userList.map(user => (
+              <div key={user.id}>
+                <div>{user.login}</div>
+                <LinkContainer to={`/user/${user.login}`}>
+                  <Button bsStyle="info" bsSize="large">Details</Button>
+                </LinkContainer>
+              </div>
+            ))}
+          </>
+        )}
+
+        {isFetching && <Loader />}
+
+        {canFetchMore && !isFetching && <Button bsStyle="primary" className="m-2" bsSize="large" onClick={this.handleLoadUsers}>Load More Users</Button>}
+      </div>
+    );
+  }
+
+  private handleReloadUsers = (): void => {
+    this.props.onReloadUserList();
+  };
+
+  private handleLoadUsers = (): void => {
+    this.props.onLoadUserList();
+  };
+}
 
 export const ConnectedUserList = connect(
   mapStateToProps,

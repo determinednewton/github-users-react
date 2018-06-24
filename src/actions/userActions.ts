@@ -4,13 +4,17 @@ import { ThunkDispatch } from 'redux-thunk';
 import { fetchUser, GithubUser } from './../api/github/api';
 import { State } from './../store';
 
-export const GET_USER_REQUEST = 'getUsersRequest';
-export const GET_USER_SUCCESS = 'getUsersSuccess';
-export const GET_USER_FAILURE = 'getUsersFailure';
+export const GET_USER_REQUEST = 'getUserRequest';
+export const GET_USER_SUCCESS = 'getUserSuccess';
+export const GET_USER_FAILURE = 'getUserFailure';
+
+export const CLEAR_USER = 'clearUser';
 
 export type GetUserRequestAction = Action<typeof GET_USER_REQUEST> & { login: string };
 export type GetUserSuccessAction = Action<typeof GET_USER_SUCCESS> & { user: GithubUser };
 export type GetUserFailureAction = Action<typeof GET_USER_FAILURE>;
+
+export type ClearUserAction = Action<typeof CLEAR_USER>;
 
 export const getUserRequest = (login: string): GetUserRequestAction => ({
   type: GET_USER_REQUEST,
@@ -31,3 +35,7 @@ export const getUser = (login: string) => (dispatch: ThunkDispatch<State, any, a
 
   fetchUser(login).then(user => dispatch(getUserSuccess(user)), () => dispatch(getUserFailure()));
 };
+
+export const clearUser = (): ClearUserAction => ({
+  type: CLEAR_USER
+});

@@ -1,5 +1,7 @@
 import * as React from 'react';
 
-import spinner from '../spinner.svg';
+import spinner from '../images/spinner.svg';
 
-export const Loader = () => <img src={spinner} alt="loader" />;
+import './Loader.css';
+
+export const Loader = () => <img src={spinner} className="loader" alt="loader" />;

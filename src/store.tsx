@@ -1,5 +1,3 @@
-import { connectRouter, routerMiddleware } from 'connected-react-router';
-import { History } from 'history';
 import { applyMiddleware, compose, createStore, Store } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -9,6 +7,7 @@ import { rootReducer } from './reducers/rootReducer';
 export interface UserListState {
   isFetching?: boolean;
   userList?: GithubUser[];
+  canFetchMore?: boolean;
 }
 
 export interface UserState {
@@ -21,12 +20,8 @@ export interface State {
   userState: UserState;
 }
 
-export const configureStore = (
-  history: History,
-  preloadedState: State = { userListState: {}, userState: {} }
-): Store<State> =>
-  createStore(
-    connectRouter(history)(rootReducer),
-    preloadedState,
-    compose(applyMiddleware(routerMiddleware(history), thunk))
-  );
+export const configureStore = (preloadedState: State = { userListState: {}, userState: {} }): Store<State> => {
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+  return createStore(rootReducer, preloadedState, composeEnhancers(applyMiddleware(thunk)));
+};
