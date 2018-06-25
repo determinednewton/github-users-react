@@ -12,8 +12,8 @@ import { State, UserListState } from '../store';
 import { Loader } from './Loader';
 
 interface UserListDispatchProps {
-  onReloadUserList: () => void;
-  onLoadUserList: () => void;
+  onReloadUserList?: () => void;
+  onLoadUserList?: () => void;
 }
 
 const mapStateToProps = (state: State): UserListState => {
@@ -40,7 +40,7 @@ type UserListProps = UserListState & UserListDispatchProps;
 export class UserList extends PureComponent<UserListProps, {}> {
   public componentDidMount(): void {
     if (!this.props.userList) {
-      this.handleReloadUsers();
+      this.handleReloadUserList();
     }
   }
 
@@ -55,7 +55,7 @@ export class UserList extends PureComponent<UserListProps, {}> {
         {userList && (
           <>
             {!isFetching && (
-              <Button bsStyle="primary" className="m-2" bsSize="large" onClick={this.handleReloadUsers}>
+              <Button bsStyle="primary" className="m-2" bsSize="large" onClick={this.handleReloadUserList}>
                 Reload Users
               </Button>
             )}
@@ -65,7 +65,7 @@ export class UserList extends PureComponent<UserListProps, {}> {
         {isFetching && <Loader />}
         {canFetchMore &&
           !isFetching && (
-            <Button bsStyle="primary" className="m-2" bsSize="large" onClick={this.handleLoadUsers}>
+            <Button bsStyle="primary" className="m-2" bsSize="large" onClick={this.handleLoadUserList}>
               Load More Users
             </Button>
           )}
@@ -73,16 +73,16 @@ export class UserList extends PureComponent<UserListProps, {}> {
     );
   }
 
-  private handleReloadUsers = (): void => {
-    this.props.onReloadUserList();
+  private handleReloadUserList = (): void => {
+    this.props.onReloadUserList!();
   };
 
-  private handleLoadUsers = (): void => {
-    this.props.onLoadUserList();
+  private handleLoadUserList = (): void => {
+    this.props.onLoadUserList!();
   };
 }
 
-const UserCardList: SFC<{ userList: GithubUser[] }> = ({ userList }) => (
+export const UserCardList: SFC<{ userList: GithubUser[] }> = ({ userList }) => (
   <ListGroup className="border-0">
     {userList.map(user => (
       <ListGroupItem key={user.id} className="border-0">

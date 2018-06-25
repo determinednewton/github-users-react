@@ -22,6 +22,8 @@
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
+    "@types/enzyme": "^3.1.11",
+    "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/jest": "^23.1.1",
     "@types/node": "^10.3.4",
     "@types/react": "^16.4.1",
@@ -31,7 +33,16 @@
     "@types/react-redux": "^6.0.2",
     "@types/react-router-bootstrap": "^0.24.5",
     "@types/react-router-dom": "^4.2.7",
+    "@types/react-test-renderer": "^16.0.1",
     "@types/redux-thunk": "^2.1.0",
-    "typescript": "^2.9.2"
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.4",
+    "react-test-renderer": "^16.4.1",
+    "typescript": "^2.9.2",
+    "warning": "^4.0.1"
+  },
+  "jest": {
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
   }
 }

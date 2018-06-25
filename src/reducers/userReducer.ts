@@ -26,10 +26,6 @@ export const userReducer = (state: UserState = {}, action: UserActions): UserSta
       };
 
     case GET_USER_FAILURE:
-      return {
-        isFetching: false
-      };
-
     case CLEAR_USER:
       return {};
 

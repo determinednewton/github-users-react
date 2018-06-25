@@ -17,8 +17,8 @@ interface UserStateProps {
 }
 
 interface UserDispatchProps {
-  onLoadUser: () => void;
-  onClearUser: () => void;
+  onLoadUser?: () => void;
+  onClearUser?: () => void;
 }
 
 type UserOwnProps = RouteComponentProps<{ login: string }, {}>;
@@ -45,7 +45,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<State, any, GetUserActions |
   };
 };
 
-type UserProps = UserState & UserOwnProps & UserDispatchProps;
+type UserProps = UserState & UserDispatchProps;
 
 export class User extends React.PureComponent<UserProps, {}> {
   public componentDidMount(): void {
@@ -55,7 +55,7 @@ export class User extends React.PureComponent<UserProps, {}> {
   }
 
   public componentWillUnmount(): void {
-    this.props.onClearUser();
+    this.props.onClearUser!();
   }
 
   public render(): JSX.Element {
@@ -86,12 +86,12 @@ export class User extends React.PureComponent<UserProps, {}> {
     );
   }
 
-  private handleLoadUser = (): void => {
-    this.props.onLoadUser();
+  public handleLoadUser = (): void => {
+    this.props.onLoadUser!();
   };
 }
 
-const UserCard: SFC<{ user: GithubUser }> = ({ user }) => (
+export const UserCard: SFC<{ user: GithubUser }> = ({ user }) => (
   <div className="thumbnail rounded bg-light p-2">
     <img src={user.avatar_url} className="img-fluid rounded-circle" style={{ height: '160px', width: 'auto' }} />
     <div className="caption">
