@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { SFC } from 'react';
 import { PureComponent } from 'react';
+import { SFC } from 'react';
+import * as React from 'react';
 import { Alert, Button, ListGroup, ListGroupItem, PageHeader } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -9,7 +9,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { getNextUserList, getUserList, GetUserListActions } from '../actions/userListActions';
 import { GithubUser } from '../api/github/api';
 import { State, UserListState } from '../store';
-import { Loader } from './Loader';
+import { Loader } from './Spinner';
 
 interface UserListDispatchProps {
   onReloadUserList?: () => void;

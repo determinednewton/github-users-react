@@ -9,7 +9,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { clearUser, ClearUserAction, getUser, GetUserActions } from '../actions/userActions';
 import { GithubUser } from '../api/github/api';
 import { State, UserState } from '../store';
-import { Loader } from './Loader';
+import { Loader } from './Spinner';
 
 interface UserStateProps {
   user?: GithubUser;
