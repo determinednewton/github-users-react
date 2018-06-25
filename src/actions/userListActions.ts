@@ -26,13 +26,18 @@ export const getUserListFailure = (): GetUserListFailureAction => ({
   type: GET_USER_LIST_FAILURE
 });
 
-export const getUserList = (since?: number) => (dispatch: ThunkDispatch<State, any, any>) => {
+export type GetUserListActions = GetUserListRequestAction | GetUserListSuccessAction | GetUserListFailureAction;
+
+export const getUserList = (since?: number) => (dispatch: ThunkDispatch<State, any, GetUserListActions>) => {
   dispatch(getUserListRequest(since));
 
   fetchUserList(since).then(userList => dispatch(getUserListSuccess(userList)), () => dispatch(getUserListFailure()));
 };
 
-export const getNextUserList = () => (dispatch: ThunkDispatch<State, any, any>, getState: () => State) => {
+export const getNextUserList = () => (
+  dispatch: ThunkDispatch<State, any, GetUserListActions>,
+  getState: () => State
+) => {
   const userList = getState().userListState.userList!;
   const { id: since } = userList[userList.length - 1];
 

@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
+import { SFC } from 'react';
+import { Alert, Button, PageHeader } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 import { ThunkDispatch } from 'redux-thunk';
 
-import { clearUser, getUser } from '../actions/userActions';
+import { clearUser, ClearUserAction, getUser, GetUserActions } from '../actions/userActions';
 import { GithubUser } from '../api/github/api';
 import { State, UserState } from '../store';
 import { Loader } from './Loader';
@@ -16,7 +17,7 @@ interface UserStateProps {
 }
 
 interface UserDispatchProps {
-  onGetUser: () => void;
+  onLoadUser: () => void;
   onClearUser: () => void;
 }
 
@@ -33,9 +34,9 @@ const mapStateToProps = (state: State, ownProps: UserOwnProps): UserStateProps =
   };
 };
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<State, any, any>, ownProps: UserOwnProps): UserDispatchProps => {
+const mapDispatchToProps = (dispatch: ThunkDispatch<State, any, GetUserActions | ClearUserAction>, ownProps: UserOwnProps): UserDispatchProps => {
   return {
-    onGetUser() {
+    onLoadUser() {
       dispatch(getUser(ownProps.match.params.login));
     },
     onClearUser() {
@@ -49,7 +50,7 @@ type UserProps = UserState & UserOwnProps & UserDispatchProps;
 export class User extends React.PureComponent<UserProps, {}> {
   public componentDidMount(): void {
     if (!this.props.user) {
-      this.props.onGetUser();
+      this.handleLoadUser();
     }
   }
 
@@ -58,23 +59,55 @@ export class User extends React.PureComponent<UserProps, {}> {
   }
 
   public render(): JSX.Element {
-    const { user, isFetching, match } = this.props;
+    const { user, isFetching } = this.props;
 
     return (
-      <div className="text-center">
+      <div>
         <LinkContainer to="/">
-          <Button bsStyle="primary" className="m-2" bsSize="large" >Users</Button>
+          <Button bsStyle="primary" className="m-2" bsSize="large">
+            User List
+          </Button>
         </LinkContainer>
 
-        <h1>User with login {match.params.login}</h1>
+        <PageHeader>User Details</PageHeader>
 
-        {user && <div>{user.html_url}</div>}
+        {user && !isFetching && <UserCard user={user} />}
+
+        {!user && !isFetching && <Alert bsStyle="warning">No Data Available</Alert>}
 
         {isFetching && <Loader />}
+
+        {!isFetching && (
+          <Button bsStyle="primary" className="m-2" bsSize="large" onClick={this.handleLoadUser}>
+            Reload User Details
+          </Button>
+        )}
       </div>
     );
   }
+
+  private handleLoadUser = (): void => {
+    this.props.onLoadUser();
+  };
 }
+
+const UserCard: SFC<{ user: GithubUser }> = ({ user }) => (
+  <div className="thumbnail rounded bg-light p-2">
+    <img src={user.avatar_url} className="img-fluid rounded-circle" style={{ height: '160px', width: 'auto' }} />
+    <div className="caption">
+      <h3>{user.login}</h3>
+      <p>
+        id: <span className="badge badge-info pl-1 pr-1">{user.id}</span>
+      </p>
+      <p>
+        html_url:
+        <a className="nav-link d-inline pl-1 pr-1" target="_blank" href={user.html_url}>
+          <span className="badge badge-info"> {user.html_url}</span>
+        </a>
+      </p>
+    </div>
+  </div>
+);
 
 export const ConnectedUser = connect(
   mapStateToProps,

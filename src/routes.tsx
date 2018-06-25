@@ -14,6 +14,7 @@ const NoMatch: SFC<RouteComponentProps<{}, {}>> = ({ location }) => (
 );
 
 export const Routes = () => (
+  <div className="d-flex justify-content-center text-center">
   <Switch>
     <Route
       exact
@@ -32,4 +33,5 @@ export const Routes = () => (
     />
     <Route component={NoMatch} />
   </Switch>
+  </div>
 );
