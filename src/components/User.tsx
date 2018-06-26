@@ -10,6 +10,7 @@ import { clearUser, ClearUserAction, getUser, GetUserActions } from '../actions/
 import { GithubUser } from '../api/github/api';
 import { State, UserState } from '../store';
 import { Loader } from './Spinner';
+import { UserThumbnail } from './UserThumbnail';
 
 interface UserStateProps {
   user?: GithubUser;
@@ -34,7 +35,10 @@ const mapStateToProps = (state: State, ownProps: UserOwnProps): UserStateProps =
   };
 };
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<State, any, GetUserActions | ClearUserAction>, ownProps: UserOwnProps): UserDispatchProps => {
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<State, any, GetUserActions | ClearUserAction>,
+  ownProps: UserOwnProps
+): UserDispatchProps => {
   return {
     onLoadUser() {
       dispatch(getUser(ownProps.match.params.login));
@@ -92,21 +96,17 @@ export class User extends React.PureComponent<UserProps, {}> {
 }
 
 export const UserCard: SFC<{ user: GithubUser }> = ({ user }) => (
-  <div className="thumbnail rounded bg-light p-2">
-    <img src={user.avatar_url} className="img-fluid rounded-circle" style={{ height: '160px', width: 'auto' }} />
-    <div className="caption">
-      <h3>{user.login}</h3>
-      <p>
-        id: <span className="badge badge-info pl-1 pr-1">{user.id}</span>
-      </p>
-      <p>
-        html_url:
-        <a className="nav-link d-inline pl-1 pr-1" target="_blank" href={user.html_url}>
-          <span className="badge badge-info"> {user.html_url}</span>
-        </a>
-      </p>
-    </div>
-  </div>
+  <UserThumbnail user={user}>
+    <p>
+      ID: <span className="badge badge-info pl-1 pr-1">{user.id}</span>
+    </p>
+    <p>
+      URL:
+      <a className="nav-link d-inline pl-1 pr-1" target="_blank" href={user.html_url}>
+        <span className="badge badge-info"> {user.html_url}</span>
+      </a>
+    </p>
+  </UserThumbnail>
 );
 
 export const ConnectedUser = connect(

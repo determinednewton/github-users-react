@@ -1,48 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UserCard component renders user data properly 1`] = `
-<div
-  className="thumbnail rounded bg-light p-2"
->
-  <img
-    className="img-fluid rounded-circle"
-    src="https://avatars3.githubusercontent.com/u/4364303?v=4"
-    style={
-      Object {
-        "height": "160px",
-        "width": "auto",
-      }
+<Component
+  user={
+    Object {
+      "avatar_url": "https://avatars3.githubusercontent.com/u/4364303?v=4",
+      "html_url": "https://github.com/glazar",
+      "id": 1,
+      "login": "glazar",
     }
-  />
-  <div
-    className="caption"
-  >
-    <h3>
-      glazar
-    </h3>
-    <p>
-      id: 
+  }
+>
+  <p>
+    ID: 
+    <span
+      className="badge badge-info pl-1 pr-1"
+    >
+      1
+    </span>
+  </p>
+  <p>
+    URL:
+    <a
+      className="nav-link d-inline pl-1 pr-1"
+      href="https://github.com/glazar"
+      target="_blank"
+    >
       <span
-        className="badge badge-info pl-1 pr-1"
+        className="badge badge-info"
       >
-        1
+         
+        https://github.com/glazar
       </span>
-    </p>
-    <p>
-      html_url:
-      <a
-        className="nav-link d-inline pl-1 pr-1"
-        href="https://github.com/glazar"
-        target="_blank"
-      >
-        <span
-          className="badge badge-info"
-        >
-           
-          https://github.com/glazar
-        </span>
-      </a>
-    </p>
-  </div>
-</div>
+    </a>
+  </p>
+</Component>
 `;

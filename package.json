@@ -42,6 +42,10 @@
     "warning": "^4.0.1"
   },
   "jest": {
+    "collectCoverageFrom": [
+      "src/components/*",
+      "src/reducers/*"
+    ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ]

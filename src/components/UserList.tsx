@@ -10,6 +10,7 @@ import { getNextUserList, getUserList, GetUserListActions } from '../actions/use
 import { GithubUser } from '../api/github/api';
 import { State, UserListState } from '../store';
 import { Loader } from './Spinner';
+import { UserThumbnail } from './UserThumbnail';
 
 interface UserListDispatchProps {
   onReloadUserList?: () => void;
@@ -93,19 +94,15 @@ export const UserCardList: SFC<{ userList: GithubUser[] }> = ({ userList }) => (
 );
 
 const UserCard: SFC<{ user: GithubUser }> = ({ user }) => (
-  <div className="thumbnail rounded bg-light p-2">
-    <img src={user.avatar_url} className="img-fluid rounded-circle" style={{ height: '160px', width: 'auto' }} />
-    <div className="caption">
-      <h3>{user.login}</h3>
-      <p>
-        <LinkContainer to={`/user/${user.login}`}>
-          <Button bsStyle="info" bsSize="large">
-            Details
-          </Button>
-        </LinkContainer>
-      </p>
-    </div>
-  </div>
+  <UserThumbnail user={user}>
+    <p>
+      <LinkContainer to={`/user/${user.login}`}>
+        <Button bsStyle="info" bsSize="large">
+          Details
+        </Button>
+      </LinkContainer>
+    </p>
+  </UserThumbnail>
 );
 
 export const ConnectedUserList = connect(
