@@ -90,7 +90,7 @@ export class User extends React.PureComponent<UserProps, {}> {
     );
   }
 
-  public handleLoadUser = (): void => {
+  private handleLoadUser = (): void => {
     this.props.onLoadUser!();
   };
 }

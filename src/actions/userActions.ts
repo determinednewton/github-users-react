@@ -32,15 +32,10 @@ export const getUserFailure = (): GetUserFailureAction => ({
 
 export type GetUserActions = GetUserRequestAction | GetUserSuccessAction | GetUserFailureAction;
 
-export const getUser = (login: string) => (dispatch: ThunkDispatch<State, any, GetUserActions>) => {
+export const getUser = (login: string) => (dispatch: ThunkDispatch<State, any, GetUserActions>): void => {
   dispatch(getUserRequest(login));
 
-  fetchUser(login).then(
-    user => {
-      dispatch(getUserSuccess(user));
-    },
-    () => dispatch(getUserFailure())
-  );
+  fetchUser(login).then(user => dispatch(getUserSuccess(user)), () => dispatch(getUserFailure()));
 };
 
 export const clearUser = (): ClearUserAction => ({

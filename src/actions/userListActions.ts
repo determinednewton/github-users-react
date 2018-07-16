@@ -28,7 +28,7 @@ export const getUserListFailure = (): GetUserListFailureAction => ({
 
 export type GetUserListActions = GetUserListRequestAction | GetUserListSuccessAction | GetUserListFailureAction;
 
-export const getUserList = (since?: number) => (dispatch: ThunkDispatch<State, any, GetUserListActions>) => {
+export const getUserList = (since?: number) => (dispatch: ThunkDispatch<State, any, GetUserListActions>): void => {
   dispatch(getUserListRequest(since));
 
   fetchUserList(since).then(userList => dispatch(getUserListSuccess(userList)), () => dispatch(getUserListFailure()));
@@ -37,7 +37,7 @@ export const getUserList = (since?: number) => (dispatch: ThunkDispatch<State, a
 export const getNextUserList = () => (
   dispatch: ThunkDispatch<State, any, GetUserListActions>,
   getState: () => State
-) => {
+): void => {
   const userList = getState().userListState.userList!;
   const { id: since } = userList[userList.length - 1];
 
