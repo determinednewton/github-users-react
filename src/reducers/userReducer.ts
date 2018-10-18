@@ -30,7 +30,6 @@ export const userReducer = (state: UserState = {}, action: UserActions): UserSta
       return {};
 
     default:
-      // @ts-ignore
       const exhaustiveCheck: never = action;
       return state;
   }

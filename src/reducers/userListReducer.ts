@@ -48,7 +48,6 @@ export const userListReducer = (state: UserListState = {}, action: UserListActio
       }
       
     default:
-      // @ts-ignore
       const exhaustiveCheck: never = action;
       return state;
   }
